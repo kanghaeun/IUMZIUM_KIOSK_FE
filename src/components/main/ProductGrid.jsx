@@ -33,7 +33,8 @@ const Grid = styled.div`
   grid-template-columns: repeat(4, 190px);
   gap: 14px;
   justify-content: center;
-  margin-top: 100px;
+  margin-bottom: 80px;
+  margin-top: 80px;
 `;
 
 const ProductCard = styled.div`

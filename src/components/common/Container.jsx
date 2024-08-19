@@ -7,7 +7,6 @@ const Container = styled.div`
   border: 1px solid #ccc;
   margin: 0 auto;
   position: relative;
-  padding: 80px;
 `;
 
 export default Container;

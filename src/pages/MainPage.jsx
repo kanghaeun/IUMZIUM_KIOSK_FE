@@ -11,8 +11,8 @@ function App() {
         <TopArea>
           <Category />
           <ProductGrid />
+          <ShoppingCart />
         </TopArea>
-        <ShoppingCart />
       </Container>
     </>
   );
