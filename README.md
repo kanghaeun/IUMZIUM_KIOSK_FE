@@ -1,1 +1,1 @@
-# Imzium_KIOSK_FE
+# IUMZIUM_KIOSK_FE
