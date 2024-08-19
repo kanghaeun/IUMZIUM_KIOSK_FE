@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import Container from "../components/common/Container";
 import { useState } from "react";
+import ShoppingCart from "../components/shoppingcart/ShoppingCart";
 
 function App() {
   const [activeCategory, setActiveCategory] = useState(null);
@@ -36,6 +37,7 @@ function App() {
           디카페인
         </Category>
       </CategoryContainer>
+      <ShoppingCart />
     </Container>
   );
 }
