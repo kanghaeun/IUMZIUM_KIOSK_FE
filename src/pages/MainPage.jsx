@@ -1,19 +1,64 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import Container from "../components/common/Container";
+import { useState } from "react";
 
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f0f0f0;
-`;
+function App() {
+  const [activeCategory, setActiveCategory] = useState(null);
 
-const MainPage = () => {
+  const handleCategoryClick = (category) => {
+    setActiveCategory(category);
+  };
   return (
     <Container>
-      <h1>Welcome to the Main Page</h1>
+      <CategoryContainer>
+        <Category
+          isActive={activeCategory === "coffee"}
+          onClick={() => handleCategoryClick("coffee")}
+        >
+          커피
+        </Category>
+        <Category
+          isActive={activeCategory === "tea"}
+          onClick={() => handleCategoryClick("tea")}
+        >
+          차
+        </Category>
+        <Category
+          isActive={activeCategory === "ade"}
+          onClick={() => handleCategoryClick("ade")}
+        >
+          에이드
+        </Category>
+        <Category
+          isActive={activeCategory === "decaf"}
+          onClick={() => handleCategoryClick("decaf")}
+        >
+          디카페인
+        </Category>
+      </CategoryContainer>
     </Container>
   );
-};
+}
 
-export default MainPage;
+export default App;
+
+const CategoryContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+`;
+
+const Category = styled.div`
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  font-size: 25px;
+  background-color: white;
+  color: black;
+  cursor: pointer;
+  ${({ isActive }) =>
+    isActive &&
+    css`
+      border-bottom: 2px solid black;
+    `}
+`;
