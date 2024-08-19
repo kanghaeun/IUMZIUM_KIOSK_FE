@@ -23,7 +23,7 @@ export default ShoppingCart;
 
 const ShoppingCartLayout = styled.div`
   display: flex;
-  width: 90%;
+  width: 686px;
   height: 112px;
   border: 1px solid;
 `;

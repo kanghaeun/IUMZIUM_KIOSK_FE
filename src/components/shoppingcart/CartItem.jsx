@@ -35,7 +35,6 @@ const CartItemLayout = styled.div`
   height: 80px;
   border: 1px solid;
   border-radius: 8px;
-  margin-right: 24px;
   position: relative;
   display: flex;
   flex-direction: column;
