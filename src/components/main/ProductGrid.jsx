@@ -1,6 +1,6 @@
-// src/components/main/ProductGrid.js
+import { useState } from "react";
 import styled from "styled-components";
-
+import ProductModal from "../modal/ProductModal";
 const products = [
   { name: "초코라떼", price: "₩ 6,800", image: "coffee.png" },
   { name: "초코라떼", price: "₩ 6,800", image: "coffee.png" },
@@ -13,16 +13,33 @@ const products = [
 ];
 
 const ProductGrid = () => {
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const handleProductClick = (product) => {
+    setSelectedProduct(product);
+  };
+
+  const closeModal = () => {
+    setSelectedProduct(null);
+  };
+
   return (
-    <Grid>
-      {products.map((product, index) => (
-        <ProductCard key={index}>
-          <ProductImage src={product.image} alt={product.name} />
-          <ProductName>{product.name}</ProductName>
-          <ProductPrice>{product.price}</ProductPrice>
-        </ProductCard>
-      ))}
-    </Grid>
+    <>
+      <Grid>
+        {products.map((product, index) => (
+          <ProductCard key={index} onClick={() => handleProductClick(product)}>
+            <ProductImage src={product.image} alt={product.name} />
+            <ProductName>{product.name}</ProductName>
+            <ProductPrice>{product.price}</ProductPrice>
+          </ProductCard>
+        ))}
+      </Grid>
+      <ProductModal
+        isOpen={!!selectedProduct}
+        onClose={closeModal}
+        product={selectedProduct}
+      />
+    </>
   );
 };
 
@@ -46,6 +63,12 @@ const ProductCard = styled.div`
   box-sizing: border-box;
   border-radius: 8px;
   text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.05);
+  }
 `;
 
 const ProductImage = styled.img`
