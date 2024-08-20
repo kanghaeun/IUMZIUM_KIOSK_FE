@@ -197,10 +197,10 @@ const ProductGrid = () => {
             style: {
               backgroundColor: "#729F96",
               color: "white",
-              padding: "20px 40px",
+              padding: "20px 400px",
               fontSize: "20px", // 폰트 사이즈 조정
               fontWeight: "bold", // 폰트 굵기 조정
-              marginRight: "10px", // 매장과 포장 버튼 간격 좁히기
+              marginRight: "5px", // 매장과 포장 버튼 간격 좁히기
             },
           },
           {

@@ -72,14 +72,14 @@ const ModalBody = styled.div`
 `;
 
 const ModalFooter = styled.div`
-  padding: 0 80px 50px 80px;
+  padding: ${(props) => props.padding || "0 80px 50px 80px;"};
   display: flex;
   justify-content: space-between;
 `;
 
 const Button = styled.button`
   padding: ${(props) => props.padding || "10px 20px"};
-  font-size: 16px;
+
   cursor: pointer;
   background-color: ${(props) => props.backgroundColor || "#f0f0f0"};
   border: none;

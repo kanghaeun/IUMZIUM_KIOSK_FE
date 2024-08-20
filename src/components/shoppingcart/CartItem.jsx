@@ -1,17 +1,27 @@
-import { useState } from "react";
 import styled from "styled-components";
+import shoppingBasket from "../../assets/shopping-basket.png";
+import { useState } from "react";
 import { TiDelete } from "react-icons/ti";
 import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
 
 const CartItem = ({ onRemove }) => {
   const [quantity, setQuantity] = useState(1);
+  const [isCartNonItem, setIsCartNonItem] = useState(false);
 
   const increaseQuantity = () => setQuantity((prev) => prev + 1);
   const decreaseQuantity = () => setQuantity((prev) => Math.max(1, prev - 1));
 
-  return (
+  const handleRemove = () => {
+    setIsCartNonItem(true);
+  };
+
+  return isCartNonItem ? (
+    <CartNonItemLayout>
+      <ShoppingBasketImg src={shoppingBasket} alt="shopping-basket" />
+    </CartNonItemLayout>
+  ) : (
     <CartItemLayout>
-      <DeleteButton onClick={onRemove}>
+      <DeleteButton onClick={handleRemove}>
         <TiDelete color="#B6B6B6" size={"22px"} />
       </DeleteButton>
       <ImagePlaceholder>음료사진</ImagePlaceholder>
@@ -43,6 +53,20 @@ const CartItemLayout = styled.div`
   padding: 5px;
 `;
 
+const CartNonItemLayout = styled.div`
+  width: 80px;
+  height: 80px;
+  border: 1px solid;
+  border-radius: 8px;
+  background-color: #e2e2e2;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+`;
+
 const DeleteButton = styled.button`
   position: absolute;
   top: 5px;
@@ -51,6 +75,10 @@ const DeleteButton = styled.button`
   border: none;
   cursor: pointer;
   font-size: 20px;
+`;
+
+const ShoppingBasketImg = styled.img`
+  display: flex;
 `;
 
 const ImagePlaceholder = styled.div`
