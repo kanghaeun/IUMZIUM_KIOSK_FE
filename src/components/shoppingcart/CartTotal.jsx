@@ -20,7 +20,7 @@ const CartTotal = () => {
 export default CartTotal;
 
 const CartTotalLayout = styled.div`
-  width: 135px;
+  width: 120px;
   height: 71px;
   display: flex;
   flex-direction: column;
