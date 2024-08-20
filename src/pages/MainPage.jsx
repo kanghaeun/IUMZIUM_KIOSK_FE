@@ -7,7 +7,12 @@ import TopArea from "../components/main/TopArea";
 import ShoppingCart from "../components/shoppingcart/ShoppingCart";
 import VoiceArea from "../components/main/VoiceArea";
 import ProductModal from "../components/modal/ProductModal";
-import OrderDetailsContent from "../components/modal/OrderDetailContent";
+import OrderDetailContent from "../components/modal/OrderDetailContent";
+import {
+  calculateTotalQuantity,
+  calculateTotalPrice,
+} from "../utils/calculateTotal";
+import styled from "styled-components";
 
 function App() {
   const navigate = useNavigate();
@@ -54,12 +59,15 @@ function App() {
       quantity: 1,
     },
     {
-      name: "카푸치노",
-      price: "₩ 5,500",
-      options: ["HOT", "Venti"],
+      name: "카페라떼",
+      price: "₩ 5,000",
+      options: ["HOT", "Tall", "바닐라 시럽"],
       quantity: 1,
     },
   ];
+
+  const totalQuantity = calculateTotalQuantity(sampleOrderDetails);
+  const totalPrice = calculateTotalPrice(sampleOrderDetails);
 
   return (
     <>
@@ -112,7 +120,7 @@ function App() {
           },
         ]}
       >
-        <OrderDetailsContent details={sampleOrderDetails} />
+        <OrderDetailContent details={sampleOrderDetails} />
       </ProductModal>
       <ProductModal
         isOpen={showPaymentModal}
@@ -146,10 +154,50 @@ function App() {
         <div>
           <p>{orderType} 주문입니다.</p>
           <p>카드결제 내용</p>
+          <TotalInfoWrapper>
+            <TotalQuantity>
+              총 수량 <span>{totalQuantity}</span> 개
+            </TotalQuantity>
+            <TotalPrice>
+              총 결제금액 <span>{totalPrice.toLocaleString()}</span>원
+            </TotalPrice>
+          </TotalInfoWrapper>
         </div>
       </ProductModal>
     </>
   );
 }
+
+const TotalInfoWrapper = styled.div`
+  position: absolute;
+  margin-top: 363px;
+  margin-left: 315px;
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+`;
+
+const TotalQuantity = styled.div`
+  font-size: 20px;
+  margin-bottom: 15px;
+
+  span {
+    font-weight: bold;
+    color: #1b3c35;
+    margin: 0 8px;
+  }
+`;
+
+const TotalPrice = styled.div`
+  font-size: 20px;
+  color: #333;
+
+  span {
+    font-weight: bold;
+    color: #1b3c35;
+    margin: 0 8px;
+  }
+`;
 
 export default App;

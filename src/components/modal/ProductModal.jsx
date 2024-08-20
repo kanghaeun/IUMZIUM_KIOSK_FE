@@ -68,7 +68,7 @@ const ModalTitle = styled.h2`
 const ModalBody = styled.div`
   flex: 1;
   padding: 80px;
-  overflow-y: auto;
+  /* overflow-y: auto; */
 `;
 
 const ModalFooter = styled.div`
