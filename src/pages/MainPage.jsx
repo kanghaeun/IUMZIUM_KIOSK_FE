@@ -3,6 +3,7 @@ import Category from "../components/main/Category";
 import ProductGrid from "../components/main/ProductGrid";
 import TopArea from "../components/main/TopArea";
 import ShoppingCart from "../components/shoppingcart/ShoppingCart";
+import VoiceArea from "../components/main/VoiceArea";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <ProductGrid />
           <ShoppingCart />
         </TopArea>
+        <VoiceArea />
       </Container>
     </>
   );
