@@ -4,7 +4,7 @@ import CartTotal from "./CartTotal";
 import CheckoutButton from "./CheckoutButton";
 import styled from "styled-components";
 
-const ShoppingCart = () => {
+const ShoppingCart = ({ onCheckout }) => {
   return (
     <div>
       <ShoppingCartLayout>
@@ -13,7 +13,7 @@ const ShoppingCart = () => {
           <CartTotal />
           <CartClear />
         </CashContainer>
-        <CheckoutButton />
+        <CheckoutButton onCheckout={onCheckout} />
       </ShoppingCartLayout>
     </div>
   );

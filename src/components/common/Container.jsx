@@ -7,6 +7,7 @@ const Container = styled.div`
   border: 1px solid #ccc;
   margin: 0 auto;
   position: relative;
+  overflow: hidden;
 `;
 
 export default Container;

@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import checkoutImage from "../../assets/checkout.png";
-const CheckoutButton = () => {
+
+const CheckoutButton = ({ onCheckout }) => {
   return (
-    <ButtonContainer>
+    <ButtonContainer onClick={onCheckout}>
       <CheckoutImage src={checkoutImage} alt="Checkout" />
       <div>결제하기</div>
     </ButtonContainer>
