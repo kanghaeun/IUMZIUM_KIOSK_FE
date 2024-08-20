@@ -11,6 +11,7 @@ const TopArea = styled.div`
   padding-left: 80px;
   margin: 0 auto;
   position: relative;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 `;
 
 export default TopArea;
