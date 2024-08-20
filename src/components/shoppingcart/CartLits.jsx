@@ -17,7 +17,7 @@ const CartLits = () => {
           <CartItem onRemove={() => handleRemove(index)} />
         </CartItemWrapper>
       ))}
-      <IoMdArrowDropright size={"5rem"} />
+      <StyledArrowIcon size={"5rem"} />
     </CartListsLayout>
   );
 };
@@ -36,4 +36,8 @@ const CartItemWrapper = styled.div`
     `
     margin-right: 24px;
   `}
+`;
+
+const StyledArrowIcon = styled(IoMdArrowDropright)`
+  color: #707070;
 `;

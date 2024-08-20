@@ -30,17 +30,17 @@ export default ProductGrid;
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 190px);
+  grid-template-columns: repeat(4, 155px);
   gap: 14px;
   justify-content: center;
-  margin-bottom: 80px;
-  margin-top: 80px;
+  margin-bottom: 60px;
+  margin-top: 100px;
 `;
 
 const ProductCard = styled.div`
   position: relative;
-  width: 190px;
-  height: 250px;
+  width: 155px;
+  height: 205px;
   background-color: #ffffff;
   border: 0.4px solid #2d2d2d;
   box-sizing: border-box;
