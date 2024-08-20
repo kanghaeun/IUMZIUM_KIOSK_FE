@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import ProductModal from "../modal/ProductModal";
+import OrderDetailsContent from "../modal/OrderDetailContent";
 
 const products = [
   { name: "초코라떼", price: "₩ 6,800", image: "coffee.png" },
@@ -11,7 +12,6 @@ const products = [
   { name: "초코라떼", price: "₩ 6,800", image: "coffee.png" },
   { name: "초코라떼", price: "₩ 6,800", image: "coffee.png" },
   { name: "초코라떼", price: "₩ 6,800", image: "coffee.png" },
-  // ... other products
 ];
 const ProductGrid = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -44,6 +44,15 @@ const ProductGrid = () => {
     setModalStep("payment");
   };
 
+  const orderDetails = [
+    {
+      name: selectedProduct?.name || "상품명",
+      price: selectedProduct?.price || "가격",
+      options: [temperature, size, syrup],
+    },
+    // 다른 주문 항목을 추가하려면 여기에 추가
+  ];
+
   const getModalContent = () => {
     switch (modalStep) {
       case "options":
@@ -72,16 +81,16 @@ const ProductGrid = () => {
               <OptionSection>
                 <OptionTitle>온도</OptionTitle>
                 <OptionButton
-                  selected={temperature === "hot"}
-                  onClick={() => setTemperature("hot")}
-                >
-                  HOT
-                </OptionButton>
-                <OptionButton
                   selected={temperature === "ice"}
                   onClick={() => setTemperature("ice")}
                 >
                   ICE
+                </OptionButton>
+                <OptionButton
+                  selected={temperature === "hot"}
+                  onClick={() => setTemperature("hot")}
+                >
+                  HOT
                 </OptionButton>
               </OptionSection>
               <OptionSection>
@@ -130,11 +139,7 @@ const ProductGrid = () => {
           </OptionsContent>
         );
       case "details":
-        return (
-          <OrderDetailsContent>
-            <p>주문 세부내역 내용</p>
-          </OrderDetailsContent>
-        );
+        return <OrderDetailsContent details={orderDetails} />;
       case "payment":
         return (
           <PaymentContent>
@@ -151,14 +156,26 @@ const ProductGrid = () => {
       case "options":
         return [
           {
-            label: "이전",
+            label: "닫기",
             onClick: closeModal,
-            style: { backgroundColor: "#f0f0f0", color: "black" },
+            style: {
+              backgroundColor: "#C5C7C9",
+              color: "white",
+              padding: "20px 100px",
+              fontSize: "204px !important", // 폰트 사이즈 증가
+              fontWeight: "bold", // 폰트 굵기 증가
+            },
           },
           {
             label: "담기",
             onClick: handleNext,
-            style: { backgroundColor: "#4CAF50", color: "white" },
+            style: {
+              backgroundColor: "#729F96",
+              color: "white",
+              padding: "20px 100px",
+              fontSize: "24px", // 폰트 사이즈 증가
+              fontWeight: "bold", // 폰트 굵기 증가
+            },
           },
         ];
       case "details":
@@ -166,32 +183,63 @@ const ProductGrid = () => {
           {
             label: "이전",
             onClick: handlePrevious,
-            style: { backgroundColor: "#f0f0f0", color: "black" },
+            style: {
+              backgroundColor: "#C5C7C9",
+              color: "white",
+              padding: "20px 100px",
+              fontSize: "20px", // 폰트 사이즈 조정
+              fontWeight: "bold", // 폰트 굵기 조정
+            },
           },
           {
             label: "매장",
             onClick: () => handleOrderType("매장"),
-            style: { backgroundColor: "#2196F3", color: "white" },
+            style: {
+              backgroundColor: "#729F96",
+              color: "white",
+              padding: "20px 40px",
+              fontSize: "20px", // 폰트 사이즈 조정
+              fontWeight: "bold", // 폰트 굵기 조정
+              marginRight: "10px", // 매장과 포장 버튼 간격 좁히기
+            },
           },
           {
             label: "포장",
             onClick: () => handleOrderType("포장"),
-            style: { backgroundColor: "#2196F3", color: "white" },
+            style: {
+              backgroundColor: "#729F96",
+              color: "white",
+              padding: "20px 40px",
+              fontSize: "20px", // 폰트 사이즈 조정
+              fontWeight: "bold", // 폰트 굵기 조정
+            },
           },
         ];
       case "payment":
         return [
           {
-            label: "이전",
-            onClick: () => setModalStep("details"),
-            style: { backgroundColor: "#f0f0f0", color: "black" },
+            label: "취소",
+            onClick: closeModal,
+            style: {
+              backgroundColor: "#f0f0f0",
+              color: "black",
+              padding: "20px 100px",
+              fontSize: "20px",
+              fontWeight: "bold",
+            },
           },
           {
-            label: "결제하기",
+            label: "결제",
             onClick: () => {
               /* Handle payment */
             },
-            style: { backgroundColor: "#4CAF50", color: "white" },
+            style: {
+              backgroundColor: "#729F96",
+              color: "white",
+              padding: "20px 100px",
+              fontSize: "20px",
+              fontWeight: "bold",
+            },
           },
         ];
       default:
@@ -319,7 +367,7 @@ const OptionTitle = styled.h3`
 `;
 
 const OptionButton = styled.button`
-  margin-right: 10px;
+  margin-right: 10px; /* 버튼 간격 조정 */
   padding: 5px 10px;
   background-color: ${(props) => (props.selected ? "#2196F3" : "#f0f0f0")};
   color: ${(props) => (props.selected ? "white" : "black")};
@@ -327,10 +375,4 @@ const OptionButton = styled.button`
   cursor: pointer;
 `;
 
-const OrderDetailsContent = styled.div`
-  // Add styles for order details content
-`;
-
-const PaymentContent = styled.div`
-  // Add styles for payment content
-`;
+const PaymentContent = styled.div``;

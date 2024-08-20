@@ -1,31 +1,6 @@
-import React from "react";
 import styled from "styled-components";
 
-const ProductModal = ({ isOpen, onClose, title, children, buttons }) => {
-  if (!isOpen) return null;
-
-  return (
-    <ModalOverlay onClick={onClose}>
-      <ModalContent onClick={(e) => e.stopPropagation()}>
-        <ModalHeader>
-          <ModalTitle>{title}</ModalTitle>
-        </ModalHeader>
-        <ModalBody>{children}</ModalBody>
-        <ModalFooter>
-          {buttons.map((button, index) => (
-            <Button key={index} onClick={button.onClick} {...button.style}>
-              {button.label}
-            </Button>
-          ))}
-        </ModalFooter>
-      </ModalContent>
-    </ModalOverlay>
-  );
-};
-
-export default ProductModal;
-
-const ModalOverlay = styled.div`
+export const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -38,7 +13,7 @@ const ModalOverlay = styled.div`
   z-index: 1000;
 `;
 
-const ModalContent = styled.div`
+export const ModalContent = styled.div`
   background-color: white;
   border-radius: 8px;
   width: 670px;
@@ -48,7 +23,7 @@ const ModalContent = styled.div`
   flex-direction: column;
 `;
 
-const ModalHeader = styled.div`
+export const ModalHeader = styled.div`
   background-color: #f4f4f4;
   height: 78px;
   display: flex;
@@ -58,26 +33,26 @@ const ModalHeader = styled.div`
   border-top-right-radius: 8px;
 `;
 
-const ModalTitle = styled.h2`
+export const ModalTitle = styled.h2`
   font-size: 24px;
   margin: 0;
   font-weight: 500;
   color: #485d59;
 `;
 
-const ModalBody = styled.div`
+export const ModalBody = styled.div`
   flex: 1;
   padding: 80px;
   overflow-y: auto;
 `;
 
-const ModalFooter = styled.div`
+export const ModalFooter = styled.div`
   padding: 0 80px 50px 80px;
   display: flex;
   justify-content: space-between;
 `;
 
-const Button = styled.button`
+export const Button = styled.button`
   padding: ${(props) => props.padding || "10px 20px"};
   font-size: 16px;
   cursor: pointer;
