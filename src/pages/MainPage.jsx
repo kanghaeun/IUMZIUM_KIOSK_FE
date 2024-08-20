@@ -139,12 +139,12 @@ function App() {
             },
           },
           {
-            label: "결제",
+            label: "승인 요청",
             onClick: handlePayment,
             style: {
               backgroundColor: "#729F96",
               color: "white",
-              padding: "20px 100px",
+              padding: "20px 84px",
               fontSize: "20px",
               fontWeight: "bold",
             },
@@ -152,8 +152,7 @@ function App() {
         ]}
       >
         <div>
-          <p>{orderType} 주문입니다.</p>
-          <p>카드결제 내용</p>
+          <CardImage src="/card.png"></CardImage>
           <TotalInfoWrapper>
             <TotalQuantity>
               총 수량 <span>{totalQuantity}</span> 개
@@ -170,7 +169,7 @@ function App() {
 
 const TotalInfoWrapper = styled.div`
   position: absolute;
-  margin-top: 363px;
+  margin-top: 71px;
   margin-left: 315px;
   padding-top: 10px;
   display: flex;
@@ -198,6 +197,12 @@ const TotalPrice = styled.div`
     color: #1b3c35;
     margin: 0 8px;
   }
+`;
+
+const CardImage = styled.img`
+  width: 430px;
+  height: auto;
+  margin-left: 40px;
 `;
 
 export default App;

@@ -48,7 +48,7 @@ const OrderDetailsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  max-height: 380px; /* 필요한 경우 이 높이를 조정하세요 */
+  max-height: 360px; /* 필요한 경우 이 높이를 조정하세요 */
   overflow-y: auto;
 `;
 
