@@ -27,6 +27,7 @@ const CartTotalLayout = styled.div`
   justify-content: flex-end;
   align-items: flex-end;
   border-bottom: 1px solid;
+  border-left: 1px solid;
 `;
 
 const TextContainer = styled.div`

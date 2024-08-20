@@ -14,6 +14,7 @@ const CartClearLayout = styled.div`
   align-items: center;
   justify-content: center;
   background-color: #bfbfbf;
+  border-left: 1px solid;
   height: 41px;
   div {
     color: #fff;
