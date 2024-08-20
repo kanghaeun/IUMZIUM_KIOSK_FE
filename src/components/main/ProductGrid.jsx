@@ -32,8 +32,8 @@ const ProductGrid = () => {
     setModalStep("options");
   };
 
-  const handleNext = () => {
-    setModalStep("details");
+  const handleAddToCart = () => {
+    closeModal();
   };
 
   const handlePrevious = () => {
@@ -59,12 +59,12 @@ const ProductGrid = () => {
         return (
           <OptionsContent>
             <LeftColumn>
-              <ProductImage
+              <ModalProductImage
                 src={selectedProduct?.image}
                 alt={selectedProduct?.name}
               />
-              <ProductName>{selectedProduct?.name}</ProductName>
-              <ProductPrice>{selectedProduct?.price}</ProductPrice>
+              <ModalProductName>{selectedProduct?.name}</ModalProductName>
+              <ModalProductPrice>{selectedProduct?.price}</ModalProductPrice>
               <QuantityControl>
                 <QuantityButton
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -81,14 +81,14 @@ const ProductGrid = () => {
               <OptionSection>
                 <OptionTitle>온도</OptionTitle>
                 <OptionButton
-                  selected={temperature === "ice"}
-                  onClick={() => setTemperature("ice")}
+                  selected={temperature === "ICE"}
+                  onClick={() => setTemperature("ICE")}
                 >
                   ICE
                 </OptionButton>
                 <OptionButton
-                  selected={temperature === "hot"}
-                  onClick={() => setTemperature("hot")}
+                  selected={temperature === "HOT"}
+                  onClick={() => setTemperature("HOT")}
                 >
                   HOT
                 </OptionButton>
@@ -96,20 +96,20 @@ const ProductGrid = () => {
               <OptionSection>
                 <OptionTitle>사이즈</OptionTitle>
                 <OptionButton
-                  selected={size === "small"}
-                  onClick={() => setSize("small")}
+                  selected={size === "Tall"}
+                  onClick={() => setSize("Tall")}
                 >
                   Small
                 </OptionButton>
                 <OptionButton
-                  selected={size === "medium"}
-                  onClick={() => setSize("medium")}
+                  selected={size === "Grande"}
+                  onClick={() => setSize("Grande")}
                 >
                   Medium
                 </OptionButton>
                 <OptionButton
-                  selected={size === "large"}
-                  onClick={() => setSize("large")}
+                  selected={size === "Venti"}
+                  onClick={() => setSize("Venti")}
                 >
                   Large
                 </OptionButton>
@@ -168,7 +168,7 @@ const ProductGrid = () => {
           },
           {
             label: "담기",
-            onClick: handleNext,
+            onClick: handleAddToCart,
             style: {
               backgroundColor: "#729F96",
               color: "white",
@@ -311,6 +311,7 @@ const ProductImage = styled.img`
 
 const ProductName = styled.div`
   position: relative;
+  text-align: center;
   bottom: 20px;
   font-size: 18px;
 `;
@@ -320,6 +321,26 @@ const ProductPrice = styled.div`
   bottom: 10px;
   right: 10px;
   font-size: 17px;
+  color: #333;
+`;
+
+const ModalProductImage = styled.img`
+  width: 100%;
+  height: auto;
+`;
+
+const ModalProductName = styled.div`
+  position: relative;
+  text-align: center;
+  bottom: 20px;
+  font-size: 25px;
+`;
+
+const ModalProductPrice = styled.div`
+  bottom: 10px;
+  text-align: center;
+  font-size: 23px;
+  font-weight: 600;
   color: #333;
 `;
 
