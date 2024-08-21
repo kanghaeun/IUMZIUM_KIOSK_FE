@@ -29,12 +29,7 @@ function App() {
   const fetchProducts = async (category) => {
     try {
       const response = await fetch(
-        `https://85ba-36-38-187-106.ngrok-free.app/api/drink/?category=${category}`,
-        {
-          headers: {
-            "ngrok-skip-browser-warning": "any",
-          },
-        }
+        `${import.meta.env.VITE_API_URL}/api/drink/?category=${category}`
       );
       const data = await response.json();
       setProducts(data);
