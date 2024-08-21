@@ -23,6 +23,7 @@ const ProductGrid = ({ products }) => {
   const closeModal = () => {
     setSelectedProduct(null);
     setModalStep("options");
+    console.log(products);
   };
 
   const handleAddToCart = () => {
@@ -52,7 +53,7 @@ const ProductGrid = ({ products }) => {
           <OptionsContent>
             <LeftColumn>
               <ModalProductImage
-                src={selectedProduct?.image}
+                src={selectedProduct?.image_path}
                 alt={selectedProduct?.name}
               />
               <ModalProductName>{selectedProduct?.name}</ModalProductName>
