@@ -2,7 +2,9 @@ import { useState } from "react";
 import styled from "styled-components";
 import ProductModal from "../modal/ProductModal";
 import OrderDetailsContent from "../modal/OrderDetailContent";
-import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
+import { FaPlus } from "react-icons/fa6";
+import { FaMinus } from "react-icons/fa";
+
 const products = [
   { name: "초코라떼", price: "₩ 6,800", image: "coffee.png" },
   { name: "초코라떼", price: "₩ 6,800", image: "coffee.png" },
@@ -69,11 +71,11 @@ const ProductGrid = () => {
                 <QuantityButton
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                 >
-                  <CiCircleMinus />
+                  <FaMinus />
                 </QuantityButton>
                 <QuantityDisplay>{quantity}</QuantityDisplay>
                 <QuantityButton onClick={() => setQuantity(quantity + 1)}>
-                  <CiCirclePlus />
+                  <FaPlus />
                 </QuantityButton>
               </QuantityControl>
             </LeftColumn>
@@ -371,12 +373,23 @@ const QuantityControl = styled.div`
 `;
 
 const QuantityButton = styled.button`
-  width: 30px;
+  /* width: 30px;
   height: 30px;
   font-size: 20px;
   background-color: #f0f0f0;
   border: none;
+  cursor: pointer; */
+
+  background: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #d9d9d9;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
   cursor: pointer;
+  font-size: 20px;
 `;
 
 const QuantityDisplay = styled.div`
