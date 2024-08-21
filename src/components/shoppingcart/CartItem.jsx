@@ -94,12 +94,12 @@ const QuantityControl = styled.div`
   width: 100%;
 `;
 
-const Button = styled.button`
+const Button = styled.div`
   background: none;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #d9d9d9;
+  /* border: 1px solid #d9d9d9; */
   width: 24px;
   height: 24px;
   border-radius: 50%;
