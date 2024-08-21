@@ -347,6 +347,8 @@ const ModalProductPrice = styled.div`
 const OptionsContent = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
 `;
 
 const LeftColumn = styled.div`
@@ -355,6 +357,10 @@ const LeftColumn = styled.div`
 
 const RightColumn = styled.div`
   width: 45%;
+  display: flex;
+  margin-top: 1rem;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const QuantityControl = styled.div`
@@ -380,20 +386,25 @@ const QuantityDisplay = styled.div`
 `;
 
 const OptionSection = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 42px;
 `;
 
 const OptionTitle = styled.h3`
   margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: 500;
 `;
 
 const OptionButton = styled.button`
   margin-right: 10px; /* 버튼 간격 조정 */
   padding: 5px 10px;
-  background-color: ${(props) => (props.selected ? "#2196F3" : "#f0f0f0")};
+  background-color: ${(props) => (props.selected ? "#1B3C35" : "#f0f0f0")};
   color: ${(props) => (props.selected ? "white" : "black")};
   border: none;
+  height: 35px;
+  border-radius: 30px;
   cursor: pointer;
+  font-size: 14px;
 `;
 
 const PaymentContent = styled.div``;

@@ -2,7 +2,8 @@ import styled from "styled-components";
 import shoppingBasket from "../../assets/shopping-basket.png";
 import { useState } from "react";
 import { TiDelete } from "react-icons/ti";
-import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
+import { FaPlus } from "react-icons/fa6";
+import { FaMinus } from "react-icons/fa";
 
 const CartItem = ({ onRemove }) => {
   const [quantity, setQuantity] = useState(1);
@@ -27,11 +28,11 @@ const CartItem = ({ onRemove }) => {
       <ImagePlaceholder>음료사진</ImagePlaceholder>
       <QuantityControl>
         <Button onClick={decreaseQuantity}>
-          <CiCircleMinus />
+          <FaMinus color="#7A7A7A" />
         </Button>
         <Quantity>{quantity}</Quantity>
         <Button onClick={increaseQuantity}>
-          <CiCirclePlus />
+          <FaPlus color="#7A7A7A" />
         </Button>
       </QuantityControl>
     </CartItemLayout>
@@ -69,12 +70,12 @@ const CartNonItemLayout = styled.div`
 
 const DeleteButton = styled.button`
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 0px;
+  right: -5px;
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 20px;
+  display: flex;
 `;
 
 const ShoppingBasketImg = styled.img`
@@ -100,7 +101,13 @@ const QuantityControl = styled.div`
 
 const Button = styled.button`
   background: none;
-  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #d9d9d9;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
   cursor: pointer;
   font-size: 20px;
 `;
