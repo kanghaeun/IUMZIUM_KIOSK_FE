@@ -1,12 +1,10 @@
-import { useState, useRef } from "react";
-import { FiMic } from "react-icons/fi";
+import { IoIosMic } from "react-icons/io";
 import styled from "styled-components";
-
-const Speech = ({ onSpeechComplete }) => {
+import { useState, useRef } from "react";
+const Voice = ({ onSpeechComplete }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const mediaRecorder = useRef(null);
-  const [isRed, setIsRed] = useState(false);
   const audioChunks = useRef([]);
 
   const startRecording = async () => {
@@ -27,7 +25,6 @@ const Speech = ({ onSpeechComplete }) => {
 
       mediaRecorder.current.start();
       setIsRecording(true);
-      setIsRed(true); // Set the button color to red
     } catch (error) {
       console.error("Error accessing microphone:", error);
     }
@@ -37,7 +34,6 @@ const Speech = ({ onSpeechComplete }) => {
     if (mediaRecorder.current && isRecording) {
       mediaRecorder.current.stop();
       setIsRecording(false);
-      setIsRed(false); // Reset the button color
       audioChunks.current = [];
     }
   };
@@ -75,53 +71,30 @@ const Speech = ({ onSpeechComplete }) => {
   };
 
   return (
-    <VoiceContainer>
-      <VoiceBtn
+    <div>
+      <button
         onClick={toggleRecording}
         disabled={isProcessing}
-        isRed={isRed} // Pass the isRed prop to style based on the recording state
         className={`ml-2 p-2 rounded-md transition-colors ${
-          isProcessing ? "opacity-50 cursor-not-allowed" : ""
-        }`}
+          isRecording
+            ? "bg-red-500 text-white hover:bg-red-600"
+            : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+        } ${isProcessing ? "opacity-50 cursor-not-allowed" : ""}`}
       >
-        <FiMic size={"3rem"} color="#fff" />
-      </VoiceBtn>
-      <Voice>원하시는 메뉴를 말씀해 주시면 주문 도와드리겠습니다.</Voice>
-    </VoiceContainer>
+        <VoiceBtn>
+          <IoIosMic size={"5rem"} color="#fff" />
+        </VoiceBtn>
+      </button>
+    </div>
   );
 };
 
-export default Speech;
-
-const VoiceContainer = styled.div`
-  text-align: center;
-  margin-top: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  align-items: center;
-`;
+export default Voice;
 
 const VoiceBtn = styled.div`
   margin-top: 2rem;
-  border: 2px solid #fff;
+  border: 3px solid #fff;
   border-radius: 50%;
   width: 80px;
   height: 80px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 3rem;
-  background-color: ${({ isRed }) =>
-    isRed
-      ? "red"
-      : "none"}; /* Change background color based on recording state */
-`;
-
-const Voice = styled.div`
-  margin-top: 1.5rem;
-  font-size: 25px;
-  color: #fff;
-  font-weight: 100;
 `;

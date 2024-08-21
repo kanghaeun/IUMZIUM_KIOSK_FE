@@ -20,7 +20,9 @@ const CartItem = ({ onRemove, isNonItem }) => {
       <DeleteButton onClick={onRemove}>
         <TiDelete color="#B6B6B6" size={"22px"} />
       </DeleteButton>
-      <ImagePlaceholder>음료사진</ImagePlaceholder>
+      <ImagePlaceholder>
+        <CoffeeImg src={"coffee.png"} />
+      </ImagePlaceholder>
       <QuantityControl>
         <Button onClick={decreaseQuantity}>
           <FaMinus color="#7A7A7A" />
@@ -83,8 +85,6 @@ const ImagePlaceholder = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f0f0f0;
-  margin: 15px 0;
 `;
 
 const QuantityControl = styled.div`
@@ -111,4 +111,9 @@ const Quantity = styled.span`
   font-size: 20px;
   font-weight: 600;
   margin: 0 5px;
+`;
+
+const CoffeeImg = styled.img`
+  width: 54px;
+  height: auto;
 `;

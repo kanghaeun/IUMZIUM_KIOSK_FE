@@ -29,7 +29,7 @@ function App() {
   const fetchProducts = async (category) => {
     try {
       const response = await fetch(
-        `https://85ba-36-38-187-106.ngrok-free.app/api/drink/?category=${category}`,
+        `https://98c2-36-38-187-106.ngrok-free.app/api/drink/?category=${category}`,
         {
           headers: {
             "ngrok-skip-browser-warning": "any",
