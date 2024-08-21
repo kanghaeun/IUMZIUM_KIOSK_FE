@@ -79,10 +79,10 @@ const ModalFooter = styled.div`
 
 const Button = styled.button`
   padding: ${(props) => props.padding || "10px 20px"};
-
   cursor: pointer;
   background-color: ${(props) => props.backgroundColor || "#f0f0f0"};
   border: none;
   border-radius: 4px;
   color: ${(props) => props.color || "black"};
+  margin-right: ${(props) => props.marginRight || "10px 20px"};
 `;

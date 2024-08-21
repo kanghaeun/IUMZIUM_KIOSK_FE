@@ -104,7 +104,7 @@ function App() {
               padding: "20px 40px",
               fontSize: "20px",
               fontWeight: "bold",
-              marginRight: "10px",
+              marginRight: "-46px",
             },
           },
           {
