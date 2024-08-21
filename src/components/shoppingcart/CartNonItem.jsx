@@ -1,5 +1,7 @@
+// CartNonItem.js
 import styled from "styled-components";
 import shoppingBasket from "../../assets/shopping-basket.png";
+
 const CartNonItem = () => {
   return (
     <CartNonItemLayout>
@@ -23,6 +25,7 @@ const CartNonItemLayout = styled.div`
   justify-content: center;
   padding: 5px;
 `;
+
 const ShoppingBasketImg = styled.img`
   display: flex;
 `;

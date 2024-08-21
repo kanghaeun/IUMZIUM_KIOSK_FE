@@ -22,12 +22,14 @@ const Speech = ({ onSpeechComplete }) => {
 
       mediaRecorder.current.onstop = async () => {
         const audioBlob = new Blob(audioChunks.current, { type: "audio/wav" });
+        console.log("Recorded Audio Blob:", audioBlob); // 녹음된 오디오 파일 로그 출력
         await handleSendAudio(audioBlob);
+        audioChunks.current = []; // 오디오 전송 후에 초기화
       };
 
       mediaRecorder.current.start();
       setIsRecording(true);
-      setIsRed(true); // Set the button color to red
+      setIsRed(true); // 버튼 색상을 빨간색으로 설정
     } catch (error) {
       console.error("Error accessing microphone:", error);
     }
@@ -37,8 +39,7 @@ const Speech = ({ onSpeechComplete }) => {
     if (mediaRecorder.current && isRecording) {
       mediaRecorder.current.stop();
       setIsRecording(false);
-      setIsRed(false); // Reset the button color
-      audioChunks.current = [];
+      setIsRed(false); // 버튼 색상 초기화
     }
   };
 
@@ -55,18 +56,20 @@ const Speech = ({ onSpeechComplete }) => {
     try {
       const formData = new FormData();
       formData.append("file", audioBlob, "recording.wav");
-
-      const response = await fetch("http://43.200.171.25/api/audio", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/audio/`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      onSpeechComplete(data.transcription);
+      onSpeechComplete(data.transcription); // 서버의 응답을 부모 컴포넌트에 전달
     } catch (error) {
       console.error("Error uploading recording:", error);
     } finally {
@@ -78,8 +81,8 @@ const Speech = ({ onSpeechComplete }) => {
     <VoiceContainer>
       <VoiceBtn
         onClick={toggleRecording}
-        disabled={isProcessing}
-        isRed={isRed} // Pass the isRed prop to style based on the recording state
+        disabled={isProcessing || isRecording} // 녹음 중일 때도 버튼 비활성화
+        isRed={isRed} // 녹음 상태에 따른 버튼 색상 변경
         className={`ml-2 p-2 rounded-md transition-colors ${
           isProcessing ? "opacity-50 cursor-not-allowed" : ""
         }`}
@@ -114,9 +117,7 @@ const VoiceBtn = styled.div`
   align-items: center;
   margin-top: 3rem;
   background-color: ${({ isRed }) =>
-    isRed
-      ? "red"
-      : "none"}; /* Change background color based on recording state */
+    isRed ? "red" : "none"}; /* 녹음 상태에 따라 배경색 변경 */
 `;
 
 const Voice = styled.div`

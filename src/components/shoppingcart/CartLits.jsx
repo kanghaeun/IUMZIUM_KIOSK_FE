@@ -1,5 +1,6 @@
+// CartList.js
 import styled from "styled-components";
-import CartItem from "./CartItem";
+import CartNonItem from "./CartNonItem";
 import { IoMdArrowDropright } from "react-icons/io";
 
 const CartList = ({ items, onRemoveItem }) => {
@@ -7,10 +8,7 @@ const CartList = ({ items, onRemoveItem }) => {
     <CartListsLayout>
       {items.map((item, index) => (
         <CartItemWrapper key={item.id} isLast={index === items.length - 1}>
-          <CartItem
-            isNonItem={item.isNonItem}
-            onRemove={() => onRemoveItem(item.id)}
-          />
+          <CartNonItem />
         </CartItemWrapper>
       ))}
       <StyledArrowIcon size={"5rem"} />
