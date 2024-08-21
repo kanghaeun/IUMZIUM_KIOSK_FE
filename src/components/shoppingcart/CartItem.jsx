@@ -3,7 +3,7 @@ import shoppingBasket from "../../assets/shopping-basket.png";
 import { useState } from "react";
 import { TiDelete } from "react-icons/ti";
 import { FaPlus } from "react-icons/fa6";
-import { FaMinus } from "react-icons/fa";
+import { FaMinus } from "react-icons/fa6";
 
 const CartItem = ({ onRemove, isNonItem }) => {
   const [quantity, setQuantity] = useState(1);
