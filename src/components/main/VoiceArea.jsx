@@ -1,13 +1,22 @@
-import { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { FiMic } from "react-icons/fi";
-import styled from "styled-components";
 
 const Speech = ({ onSpeechComplete }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const mediaRecorder = useRef(null);
-  const [isRed, setIsRed] = useState(false);
   const audioChunks = useRef([]);
+  const audioRef = useRef(new Audio());
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    audio.onended = () => {
+      console.log("Audio playback ended");
+    };
+    return () => {
+      audio.onended = null;
+    };
+  }, []);
 
   const startRecording = async () => {
     try {
@@ -21,15 +30,12 @@ const Speech = ({ onSpeechComplete }) => {
       };
 
       mediaRecorder.current.onstop = async () => {
-        const audioBlob = new Blob(audioChunks.current, { type: "audio/wav" });
-        console.log("Recorded Audio Blob:", audioBlob); // 녹음된 오디오 파일 로그 출력
+        const audioBlob = new Blob(audioChunks.current, { type: "audio/mpeg" });
         await handleSendAudio(audioBlob);
-        audioChunks.current = []; // 오디오 전송 후에 초기화
       };
 
       mediaRecorder.current.start();
       setIsRecording(true);
-      setIsRed(true); // 버튼 색상을 빨간색으로 설정
     } catch (error) {
       console.error("Error accessing microphone:", error);
     }
@@ -39,7 +45,7 @@ const Speech = ({ onSpeechComplete }) => {
     if (mediaRecorder.current && isRecording) {
       mediaRecorder.current.stop();
       setIsRecording(false);
-      setIsRed(false); // 버튼 색상 초기화
+      audioChunks.current = [];
     }
   };
 
@@ -55,9 +61,10 @@ const Speech = ({ onSpeechComplete }) => {
     setIsProcessing(true);
     try {
       const formData = new FormData();
-      formData.append("file", audioBlob, "recording.wav");
+      formData.append("file", audioBlob, "recording.mp3");
+
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/audio/`,
+        "https://6f72-36-38-187-106.ngrok-free.app/api/audio/rasa/",
         {
           method: "POST",
           body: formData,
@@ -68,8 +75,33 @@ const Speech = ({ onSpeechComplete }) => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json();
-      onSpeechComplete(data.transcription); // 서버의 응답을 부모 컴포넌트에 전달
+      const formDataResponse = await response.formData();
+      const textData = formDataResponse.get("text1");
+      const audioData = formDataResponse.get("audio1");
+
+      console.log("Text response:", textData);
+      console.log("Audio file name:", audioData.name);
+
+      // Call onSpeechComplete only if it's a function
+      if (typeof onSpeechComplete === "function") {
+        onSpeechComplete(textData);
+      }
+
+      // Convert the audio data to a Blob
+      const responseAudioBlob = new Blob([await audioData.arrayBuffer()], {
+        type: "audio/mpeg",
+      });
+
+      // Create a URL for the audio Blob and play it
+      const audioUrl = URL.createObjectURL(responseAudioBlob);
+      audioRef.current.src = audioUrl;
+
+      // Play the audio and log any errors
+      audioRef.current
+        .play()
+        .catch((e) => console.error("Error playing audio:", e));
+
+      console.log("Audio should be playing now");
     } catch (error) {
       console.error("Error uploading recording:", error);
     } finally {
@@ -78,51 +110,20 @@ const Speech = ({ onSpeechComplete }) => {
   };
 
   return (
-    <VoiceContainer>
-      <VoiceBtn
+    <div>
+      <button
         onClick={toggleRecording}
-        disabled={isProcessing || isRecording} // 녹음 중일 때도 버튼 비활성화
-        isRed={isRed} // 녹음 상태에 따른 버튼 색상 변경
+        disabled={isProcessing}
         className={`ml-2 p-2 rounded-md transition-colors ${
-          isProcessing ? "opacity-50 cursor-not-allowed" : ""
-        }`}
+          isRecording
+            ? "bg-red-500 text-white hover:bg-red-600"
+            : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+        } ${isProcessing ? "opacity-50 cursor-not-allowed" : ""}`}
       >
-        <FiMic size={"3rem"} color="#fff" />
-      </VoiceBtn>
-      <Voice>원하시는 메뉴를 말씀해 주시면 주문 도와드리겠습니다.</Voice>
-    </VoiceContainer>
+        <FiMic size={20} />
+      </button>
+    </div>
   );
 };
 
 export default Speech;
-
-const VoiceContainer = styled.div`
-  text-align: center;
-  margin-top: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const VoiceBtn = styled.div`
-  margin-top: 2rem;
-  border: 2px solid #fff;
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 3rem;
-  background-color: ${({ isRed }) =>
-    isRed ? "red" : "none"}; /* 녹음 상태에 따라 배경색 변경 */
-`;
-
-const Voice = styled.div`
-  margin-top: 1.5rem;
-  font-size: 25px;
-  color: #fff;
-  font-weight: 100;
-`;

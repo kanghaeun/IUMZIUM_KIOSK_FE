@@ -21,7 +21,10 @@ function App() {
   const [orderType, setOrderType] = useState("");
   const [products, setProducts] = useState([]);
   const [activeCategory, setActiveCategory] = useState("coffee");
-
+  const [orderImg, setOrderImg] = useState("");
+  const onClickImg = (selectImg) => {
+    setOrderImg(selectImg);
+  };
   useEffect(() => {
     fetchProducts(activeCategory);
   }, [activeCategory]);
@@ -97,7 +100,10 @@ function App() {
         <TopArea>
           <Category onCategoryChange={handleCategoryChange} />
           <ProductGrid products={products} />
-          <ShoppingCart onCheckout={handleShowOrderDetails} />
+          {/* <ShoppingCart
+            onCheckout={handleShowOrderDetails}
+            onClickImg={onClickImg}
+          /> */}
         </TopArea>
         <VoiceArea />
       </Container>

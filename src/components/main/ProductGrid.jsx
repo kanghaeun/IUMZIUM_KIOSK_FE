@@ -110,12 +110,6 @@ const ProductGrid = ({ products }) => {
               <OptionSection>
                 <OptionTitle>시럽</OptionTitle>
                 <OptionButton
-                  selected={syrup === "none"}
-                  onClick={() => setSyrup("none")}
-                >
-                  없음
-                </OptionButton>
-                <OptionButton
                   selected={syrup === "vanilla"}
                   onClick={() => setSyrup("vanilla")}
                 >
@@ -125,7 +119,22 @@ const ProductGrid = ({ products }) => {
                   selected={syrup === "hazelnut"}
                   onClick={() => setSyrup("hazelnut")}
                 >
-                  헤이즐넛
+                  카라멜
+                </OptionButton>
+              </OptionSection>
+              <OptionSection>
+                <OptionTitle>부가옵션</OptionTitle>
+                <OptionButton
+                  selected={temperature === "ICE"}
+                  onClick={() => setTemperature("ICE")}
+                >
+                  휘핑크림
+                </OptionButton>
+                <OptionButton
+                  selected={temperature === "HOT"}
+                  onClick={() => setTemperature("HOT")}
+                >
+                  샷 추가
                 </OptionButton>
               </OptionSection>
             </RightColumn>
@@ -340,7 +349,6 @@ const OptionsContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 1rem;
 `;
 
 const LeftColumn = styled.div`
@@ -350,7 +358,6 @@ const LeftColumn = styled.div`
 const RightColumn = styled.div`
   width: 45%;
   display: flex;
-  margin-top: 1rem;
   flex-direction: column;
   justify-content: center;
 `;
@@ -393,7 +400,6 @@ const OptionSection = styled.div`
 `;
 
 const OptionTitle = styled.h3`
-  margin-bottom: 10px;
   font-size: 20px;
   font-weight: 500;
 `;
@@ -408,6 +414,7 @@ const OptionButton = styled.button`
   border-radius: 30px;
   cursor: pointer;
   font-size: 14px;
+  margin-top: 10px;
 `;
 
 const PaymentContent = styled.div``;

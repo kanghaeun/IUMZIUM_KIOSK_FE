@@ -5,7 +5,7 @@ import CartTotal from "./CartTotal";
 import CheckoutButton from "./CheckoutButton";
 import styled from "styled-components";
 
-const ShoppingCart = ({ onCheckout }) => {
+const ShoppingCart = ({ onCheckout, onClickImg }) => {
   const [items, setItems] = useState([
     { id: 1, isNonItem: false },
     { id: 2, isNonItem: false },
@@ -29,7 +29,11 @@ const ShoppingCart = ({ onCheckout }) => {
   return (
     <div>
       <ShoppingCartLayout>
-        <CartList items={items} onRemoveItem={handleRemoveItem} />
+        <CartList
+          items={items}
+          onRemoveItem={handleRemoveItem}
+          onClickImg={onClickImg}
+        />
         <CashContainer>
           <CartTotal />
           <CartClear onClearAll={handleClearAll} />
