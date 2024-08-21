@@ -1,16 +1,16 @@
-import { useState } from "react";
 import styled from "styled-components";
 import CartItem from "./CartItem";
 import { IoMdArrowDropright } from "react-icons/io";
 
-const CartLits = () => {
-  const [items, setItems] = useState([1, 2, 3]); // 예시로 3개의 아이템
-
+const CartList = ({ items, onRemoveItem }) => {
   return (
     <CartListsLayout>
       {items.map((item, index) => (
-        <CartItemWrapper key={index} isLast={index === items.length - 1}>
-          <CartItem />
+        <CartItemWrapper key={item.id} isLast={index === items.length - 1}>
+          <CartItem
+            isNonItem={item.isNonItem}
+            onRemove={() => onRemoveItem(item.id)}
+          />
         </CartItemWrapper>
       ))}
       <StyledArrowIcon size={"5rem"} />
@@ -18,7 +18,7 @@ const CartLits = () => {
   );
 };
 
-export default CartLits;
+export default CartList;
 
 const CartListsLayout = styled.div`
   display: flex;

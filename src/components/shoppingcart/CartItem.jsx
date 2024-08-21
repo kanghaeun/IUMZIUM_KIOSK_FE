@@ -5,24 +5,19 @@ import { TiDelete } from "react-icons/ti";
 import { FaPlus } from "react-icons/fa6";
 import { FaMinus } from "react-icons/fa";
 
-const CartItem = ({ onRemove }) => {
+const CartItem = ({ onRemove, isNonItem }) => {
   const [quantity, setQuantity] = useState(1);
-  const [isCartNonItem, setIsCartNonItem] = useState(false);
 
   const increaseQuantity = () => setQuantity((prev) => prev + 1);
   const decreaseQuantity = () => setQuantity((prev) => Math.max(1, prev - 1));
 
-  const handleRemove = () => {
-    setIsCartNonItem(true);
-  };
-
-  return isCartNonItem ? (
+  return isNonItem ? (
     <CartNonItemLayout>
       <ShoppingBasketImg src={shoppingBasket} alt="shopping-basket" />
     </CartNonItemLayout>
   ) : (
     <CartItemLayout>
-      <DeleteButton onClick={handleRemove}>
+      <DeleteButton onClick={onRemove}>
         <TiDelete color="#B6B6B6" size={"22px"} />
       </DeleteButton>
       <ImagePlaceholder>음료사진</ImagePlaceholder>
