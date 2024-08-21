@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import ProductModal from "../modal/ProductModal";
 import OrderDetailsContent from "../modal/OrderDetailContent";
-
+import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
 const products = [
   { name: "초코라떼", price: "₩ 6,800", image: "coffee.png" },
   { name: "초코라떼", price: "₩ 6,800", image: "coffee.png" },
@@ -69,11 +69,11 @@ const ProductGrid = () => {
                 <QuantityButton
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                 >
-                  -
+                  <CiCircleMinus />
                 </QuantityButton>
                 <QuantityDisplay>{quantity}</QuantityDisplay>
                 <QuantityButton onClick={() => setQuantity(quantity + 1)}>
-                  +
+                  <CiCirclePlus />
                 </QuantityButton>
               </QuantityControl>
             </LeftColumn>
