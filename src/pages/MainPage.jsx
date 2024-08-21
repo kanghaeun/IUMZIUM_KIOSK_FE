@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Container from "../components/common/Container";
 import Category from "../components/main/Category";
@@ -19,6 +19,33 @@ function App() {
   const [showOrderDetails, setShowOrderDetails] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [orderType, setOrderType] = useState("");
+  const [products, setProducts] = useState([]);
+  const [activeCategory, setActiveCategory] = useState("coffee");
+
+  useEffect(() => {
+    fetchProducts(activeCategory);
+  }, [activeCategory]);
+
+  const fetchProducts = async (category) => {
+    try {
+      const response = await fetch(
+        `https://85ba-36-38-187-106.ngrok-free.app/api/drink/?category=${category}`,
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "any",
+          },
+        }
+      );
+      const data = await response.json();
+      setProducts(data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  const handleCategoryChange = (category) => {
+    setActiveCategory(category);
+  };
 
   const handleShowOrderDetails = () => {
     setShowOrderDetails(true);
@@ -73,8 +100,8 @@ function App() {
     <>
       <Container>
         <TopArea>
-          <Category />
-          <ProductGrid />
+          <Category onCategoryChange={handleCategoryChange} />
+          <ProductGrid products={products} />
           <ShoppingCart onCheckout={handleShowOrderDetails} />
         </TopArea>
         <VoiceArea />

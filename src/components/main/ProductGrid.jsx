@@ -1,21 +1,12 @@
 import { useState } from "react";
 import styled from "styled-components";
+
 import ProductModal from "../modal/ProductModal";
 import OrderDetailsContent from "../modal/OrderDetailContent";
 import { FaPlus } from "react-icons/fa6";
 import { FaMinus } from "react-icons/fa";
 
-const products = [
-  { name: "초코라떼", price: "₩ 6,800", image: "coffee.png" },
-  { name: "초코라떼", price: "₩ 6,800", image: "coffee.png" },
-  { name: "초코라떼", price: "₩ 6,800", image: "coffee.png" },
-  { name: "초코라떼", price: "₩ 6,800", image: "coffee.png" },
-  { name: "초코라떼", price: "₩ 6,800", image: "coffee.png" },
-  { name: "초코라떼", price: "₩ 6,800", image: "coffee.png" },
-  { name: "초코라떼", price: "₩ 6,800", image: "coffee.png" },
-  { name: "초코라떼", price: "₩ 6,800", image: "coffee.png" },
-];
-const ProductGrid = () => {
+const ProductGrid = ({ products }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [modalStep, setModalStep] = useState("options");
   const [quantity, setQuantity] = useState(1);
@@ -52,7 +43,6 @@ const ProductGrid = () => {
       price: selectedProduct?.price || "가격",
       options: [temperature, size, syrup],
     },
-    // 다른 주문 항목을 추가하려면 여기에 추가
   ];
 
   const getModalContent = () => {
@@ -248,15 +238,14 @@ const ProductGrid = () => {
         return [];
     }
   };
-
   return (
     <>
       <Grid>
         {products.map((product, index) => (
           <ProductCard key={index} onClick={() => handleProductClick(product)}>
-            <ProductImage src={product.image} alt={product.name} />
+            <ProductImage src={product.image_path} alt={product.name} />
             <ProductName>{product.name}</ProductName>
-            <ProductPrice>{product.price}</ProductPrice>
+            <ProductPrice>₩ {product.price.toLocaleString()}</ProductPrice>
           </ProductCard>
         ))}
       </Grid>

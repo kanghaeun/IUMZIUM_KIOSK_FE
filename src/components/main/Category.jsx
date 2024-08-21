@@ -1,4 +1,3 @@
-// src/components/Category.js
 import { useState } from "react";
 import styled, { css } from "styled-components";
 
@@ -9,11 +8,12 @@ const categories = [
   { id: "decaf", name: "디카페인" },
 ];
 
-const Category = () => {
+const Category = ({ onCategoryChange }) => {
   const [activeCategory, setActiveCategory] = useState("coffee");
 
   const handleCategoryClick = (category) => {
     setActiveCategory(category);
+    onCategoryChange(category);
   };
 
   return (
