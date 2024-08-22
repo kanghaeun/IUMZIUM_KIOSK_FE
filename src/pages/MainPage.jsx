@@ -100,10 +100,10 @@ function App() {
         <TopArea>
           <Category onCategoryChange={handleCategoryChange} />
           <ProductGrid products={products} />
-          {/* <ShoppingCart
+          {/*<ShoppingCart
             onCheckout={handleShowOrderDetails}
             onClickImg={onClickImg}
-          /> */}
+          />*/}
         </TopArea>
         <VoiceArea />
       </Container>

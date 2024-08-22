@@ -7,6 +7,8 @@ const Speech = ({ onSpeechComplete }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const mediaRecorder = useRef(null);
   const [isRed, setIsRed] = useState(false);
+  const [textData, setTextData] = useState("");
+  const [apiData, setApiData] = useState("");
 
   const audioChunks = useRef([]);
   const audioRef = useRef(new Audio());
@@ -49,6 +51,7 @@ const Speech = ({ onSpeechComplete }) => {
     if (mediaRecorder.current && isRecording) {
       mediaRecorder.current.stop();
       setIsRecording(false);
+      setIsRed(false);
       audioChunks.current = [];
     }
   };
@@ -68,7 +71,7 @@ const Speech = ({ onSpeechComplete }) => {
       formData.append("file", audioBlob, "recording.mp3");
 
       const response = await fetch(
-        "https://6f72-36-38-187-106.ngrok-free.app/api/audio/rasa/",
+        `https://2024-36-38-187-106.ngrok-free.app/api/audio/rasa/`,
         {
           method: "POST",
           body: formData,
@@ -80,11 +83,14 @@ const Speech = ({ onSpeechComplete }) => {
       }
 
       const formDataResponse = await response.formData();
-      const textData = formDataResponse.get("text1");
-      const audioData = formDataResponse.get("audio1");
-
+      const textData = formDataResponse.get("category_text");
+      const audioData = formDataResponse.get("category_audio");
+      const apiData = formDataResponse.get("api_url");
+      setTextData(textData);
+      setApiData(apiData);
       console.log("Text response:", textData);
       console.log("Audio file name:", audioData.name);
+      console.log("api response:", apiData);
 
       // Call onSpeechComplete only if it's a function
       if (typeof onSpeechComplete === "function") {
@@ -125,7 +131,7 @@ const Speech = ({ onSpeechComplete }) => {
       >
         <FiMic size={"3rem"} color="#fff" />
       </VoiceBtn>
-      <Voice>원하시는 메뉴를 말씀해 주시면 주문 도와드리겠습니다</Voice>
+      <Voice>{textData}</Voice>
     </VoiceContainer>
   );
 };
