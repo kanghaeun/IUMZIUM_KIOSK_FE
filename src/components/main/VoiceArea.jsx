@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { FiMic } from "react-icons/fi";
 import styled from "styled-components";
-
 const Speech = ({ onSpeechComplete }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -10,7 +9,32 @@ const Speech = ({ onSpeechComplete }) => {
   const [textData, setTextData] = useState("");
   const [apiData, setApiData] = useState("");
 
+  const [greetingMessage, setGreetingMessage] = useState("");
+
   const audioChunks = useRef([]);
+  const hasGreeted = useRef(false);
+
+  useEffect(() => {
+    const fetchGreeting = async () => {
+      if (!hasGreeted.current) {
+        try {
+          const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/api/audio/greet/`
+          );
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const data = await response.json();
+          setGreetingMessage(data.message);
+          hasGreeted.current = true;
+        } catch (error) {
+          console.error("Error fetching greeting:", error);
+        }
+      }
+    };
+
+    fetchGreeting();
+  }, []);
   const audioRef = useRef(new Audio());
 
   useEffect(() => {
