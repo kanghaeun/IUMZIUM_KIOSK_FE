@@ -71,6 +71,12 @@ const Speech = ({ onSpeechComplete }) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (textData) {
+      setHasInteracted(true);
+    }
+  }, [textData]);
+
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -134,6 +140,7 @@ const Speech = ({ onSpeechComplete }) => {
       const apiData = formDataResponse.get("api_url");
       setTextData(textData);
       setApiData(apiData);
+      setHasInteracted(true); // 여기에 추가
       console.log("Text response:", textData);
       console.log("Audio file name:", audioData.name);
       console.log("api response:", apiData);
@@ -173,12 +180,10 @@ const Speech = ({ onSpeechComplete }) => {
       >
         <FiMic size={"3rem"} color="#fff" />
       </VoiceBtn>
-      <Voice>{hasInteracted ? textData : greetingMessage}</Voice>{" "}
+      <Voice>{hasInteracted ? textData : greetingMessage}</Voice>
     </VoiceContainer>
   );
 };
-
-export default Speech;
 
 const VoiceContainer = styled.div`
   text-align: center;
@@ -213,3 +218,5 @@ const Voice = styled.div`
   font-weight: 100;
   line-height: 1.3;
 `;
+
+export default Speech;
