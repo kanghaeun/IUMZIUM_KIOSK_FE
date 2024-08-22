@@ -22,18 +22,31 @@ function App() {
   const [products, setProducts] = useState([]);
   const [activeCategory, setActiveCategory] = useState("coffee");
   const [orderImg, setOrderImg] = useState("");
+  const [apiUrl, setApiUrl] = useState("");
+
   const onClickImg = (selectImg) => {
     setOrderImg(selectImg);
   };
-  useEffect(() => {
-    fetchProducts(activeCategory);
-  }, [activeCategory]);
 
-  const fetchProducts = async (category) => {
+  useEffect(() => {
+    fetchProducts();
+  }, [apiUrl, activeCategory]);
+
+  const fetchProducts = async () => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/drink/?category=${category}`
-      );
+      let url;
+      if (apiUrl) {
+        url = apiUrl;
+        // Extract category from apiUrl and update activeCategory
+        const urlParams = new URLSearchParams(new URL(apiUrl).search);
+        const category = urlParams.get("category");
+        if (category) {
+          setActiveCategory(category);
+        }
+      } else {
+        url = `https://52.78.120.182.nip.io/api/drink/?category=${activeCategory}`;
+      }
+      const response = await fetch(url);
       const data = await response.json();
       setProducts(data);
     } catch (error) {
@@ -43,6 +56,7 @@ function App() {
 
   const handleCategoryChange = (category) => {
     setActiveCategory(category);
+    setApiUrl(""); // Reset apiUrl when category changes manually
   };
 
   const handleShowOrderDetails = () => {
@@ -55,7 +69,7 @@ function App() {
 
   const handlePayment = () => {
     handleClosePaymentModal();
-    navigate("/receipt"); // ReceiptPage로 이동
+    navigate("/receipt");
   };
 
   const handleShowPaymentModal = (type) => {
@@ -67,6 +81,12 @@ function App() {
   const handleClosePaymentModal = () => {
     setShowPaymentModal(false);
     setShowOrderDetails(true);
+  };
+
+  const handleSpeechComplete = (text, api) => {
+    if (api) {
+      setApiUrl(api);
+    }
   };
 
   // 임의의 주문 상세 정보 데이터
@@ -98,14 +118,17 @@ function App() {
     <>
       <Container>
         <TopArea>
-          <Category onCategoryChange={handleCategoryChange} />
+          <Category
+            onCategoryChange={handleCategoryChange}
+            activeCategory={activeCategory}
+          />
           <ProductGrid products={products} />
           {/*<ShoppingCart
             onCheckout={handleShowOrderDetails}
             onClickImg={onClickImg}
           />*/}
         </TopArea>
-        <VoiceArea />
+        <VoiceArea onSpeechComplete={handleSpeechComplete} />
       </Container>
       <ProductModal
         isOpen={showOrderDetails}

@@ -41,7 +41,7 @@ const Speech = ({ onSpeechComplete }) => {
 
       mediaRecorder.current.start();
       setIsRecording(true);
-      setIsRed(true); // 버튼 색상을 빨간색으로 설정
+      setIsRed(true);
     } catch (error) {
       console.error("Error accessing microphone:", error);
     }
@@ -92,21 +92,17 @@ const Speech = ({ onSpeechComplete }) => {
       console.log("Audio file name:", audioData.name);
       console.log("api response:", apiData);
 
-      // Call onSpeechComplete only if it's a function
       if (typeof onSpeechComplete === "function") {
-        onSpeechComplete(textData);
+        onSpeechComplete(textData, apiData);
       }
 
-      // Convert the audio data to a Blob
       const responseAudioBlob = new Blob([await audioData.arrayBuffer()], {
         type: "audio/mpeg",
       });
 
-      // Create a URL for the audio Blob and play it
       const audioUrl = URL.createObjectURL(responseAudioBlob);
       audioRef.current.src = audioUrl;
 
-      // Play the audio and log any errors
       audioRef.current
         .play()
         .catch((e) => console.error("Error playing audio:", e));
@@ -124,7 +120,7 @@ const Speech = ({ onSpeechComplete }) => {
       <VoiceBtn
         onClick={toggleRecording}
         disabled={isProcessing}
-        isRed={isRed} // 녹음 상태에 따른 버튼 색상 변경
+        isRed={isRed}
         className={`ml-2 p-2 rounded-md transition-colors ${
           isProcessing ? "opacity-50 cursor-not-allowed" : ""
         }`}
@@ -137,6 +133,7 @@ const Speech = ({ onSpeechComplete }) => {
 };
 
 export default Speech;
+
 const VoiceContainer = styled.div`
   text-align: center;
   margin-top: 60px;
@@ -160,8 +157,7 @@ const VoiceBtn = styled.div`
   align-items: center;
   margin-top: 1.5rem;
   margin-bottom: 1rem;
-  background-color: ${({ isRed }) =>
-    isRed ? "red" : "none"}; /* 녹음 상태에 따라 배경색 변경 */
+  background-color: ${({ isRed }) => (isRed ? "red" : "none")};
 `;
 
 const Voice = styled.div`

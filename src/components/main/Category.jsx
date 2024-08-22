@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled, { css } from "styled-components";
 
 const categories = [
@@ -8,11 +7,8 @@ const categories = [
   { id: "decaf", name: "디카페인" },
 ];
 
-const Category = ({ onCategoryChange }) => {
-  const [activeCategory, setActiveCategory] = useState("coffee");
-
+const Category = ({ onCategoryChange, activeCategory }) => {
   const handleCategoryClick = (category) => {
-    setActiveCategory(category);
     onCategoryChange(category);
   };
 
