@@ -313,7 +313,7 @@ const ProductImage = styled.img`
 const ProductName = styled.div`
   position: relative;
   text-align: center;
-  bottom: 20px;
+  bottom: 15px;
   font-size: 18px;
 `;
 
