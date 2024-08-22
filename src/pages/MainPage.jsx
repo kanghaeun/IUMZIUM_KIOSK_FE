@@ -37,6 +37,8 @@ function App() {
       let url;
       if (apiUrl) {
         url = apiUrl;
+        console.log(url);
+
         // Extract category from apiUrl and update activeCategory
         const urlParams = new URLSearchParams(new URL(apiUrl).search);
         const category = urlParams.get("category");

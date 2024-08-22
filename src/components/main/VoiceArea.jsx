@@ -1,31 +1,56 @@
 import { useState, useRef, useEffect } from "react";
 import { FiMic } from "react-icons/fi";
 import styled from "styled-components";
+
 const Speech = ({ onSpeechComplete }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const mediaRecorder = useRef(null);
-  const [isRed, setIsRed] = useState(false);
   const [textData, setTextData] = useState("");
   const [apiData, setApiData] = useState("");
-
+  const [hasInteracted, setHasInteracted] = useState(false);
   const [greetingMessage, setGreetingMessage] = useState("");
-
   const audioChunks = useRef([]);
   const hasGreeted = useRef(false);
+  const audioRef = useRef(new Audio());
 
   useEffect(() => {
     const fetchGreeting = async () => {
       if (!hasGreeted.current) {
         try {
+          const formData = new FormData();
+          // 필요한 경우 여기에 데이터를 추가하세요
+          // formData.append('key', 'value');
+
           const response = await fetch(
-            `${import.meta.env.VITE_API_URL}/api/audio/greet/`
+            `https://2024-36-38-187-106.ngrok-free.app/api/audio/greet/`,
+            {
+              method: "POST",
+              body: formData,
+            }
           );
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
-          const data = await response.json();
-          setGreetingMessage(data.message);
+          const responseData = await response.formData();
+          const textData = responseData.get("text");
+          const audioData = responseData.get("audio");
+
+          setGreetingMessage(textData);
+          console.log(textData);
+
+          // 오디오를 바로 재생합니다.
+          if (audioData) {
+            const audioBlob = new Blob([await audioData.arrayBuffer()], {
+              type: "audio/mpeg",
+            });
+            const audioUrl = URL.createObjectURL(audioBlob);
+            audioRef.current.src = audioUrl;
+            audioRef.current
+              .play()
+              .catch((e) => console.error("Error playing greeting audio:", e));
+          }
+
           hasGreeted.current = true;
         } catch (error) {
           console.error("Error fetching greeting:", error);
@@ -35,7 +60,6 @@ const Speech = ({ onSpeechComplete }) => {
 
     fetchGreeting();
   }, []);
-  const audioRef = useRef(new Audio());
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -65,7 +89,6 @@ const Speech = ({ onSpeechComplete }) => {
 
       mediaRecorder.current.start();
       setIsRecording(true);
-      setIsRed(true);
     } catch (error) {
       console.error("Error accessing microphone:", error);
     }
@@ -75,7 +98,6 @@ const Speech = ({ onSpeechComplete }) => {
     if (mediaRecorder.current && isRecording) {
       mediaRecorder.current.stop();
       setIsRecording(false);
-      setIsRed(false);
       audioChunks.current = [];
     }
   };
@@ -144,14 +166,14 @@ const Speech = ({ onSpeechComplete }) => {
       <VoiceBtn
         onClick={toggleRecording}
         disabled={isProcessing}
-        isRed={isRed}
+        $isRecording={isRecording}
         className={`ml-2 p-2 rounded-md transition-colors ${
           isProcessing ? "opacity-50 cursor-not-allowed" : ""
         }`}
       >
         <FiMic size={"3rem"} color="#fff" />
       </VoiceBtn>
-      <Voice>{textData}</Voice>
+      <Voice>{hasInteracted ? textData : greetingMessage}</Voice>{" "}
     </VoiceContainer>
   );
 };
@@ -181,7 +203,7 @@ const VoiceBtn = styled.div`
   align-items: center;
   margin-top: 1.5rem;
   margin-bottom: 1rem;
-  background-color: ${({ isRed }) => (isRed ? "red" : "none")};
+  background-color: ${({ $isRecording }) => ($isRecording ? "red" : "none")};
 `;
 
 const Voice = styled.div`

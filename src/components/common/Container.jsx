@@ -5,7 +5,7 @@ const Container = styled.div`
   background-color: #1b3c35;
   border: 1px solid #ccc;
   margin: 0 auto;
-  position: relative;
+  position: fixed;
   overflow: hidden;
 `;
 
