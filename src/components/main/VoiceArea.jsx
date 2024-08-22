@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { FiMic } from "react-icons/fi";
+import { FiMic, FiPlay } from "react-icons/fi";
 import styled from "styled-components";
 
 const Speech = ({ onSpeechComplete }) => {
@@ -11,55 +11,52 @@ const Speech = ({ onSpeechComplete }) => {
   const [hasInteracted, setHasInteracted] = useState(false);
   const [greetingMessage, setGreetingMessage] = useState("");
   const audioChunks = useRef([]);
-  const hasGreeted = useRef(false);
   const audioRef = useRef(new Audio());
+  const [greetingReady, setGreetingReady] = useState(false);
 
   useEffect(() => {
     const fetchGreeting = async () => {
-      if (!hasGreeted.current) {
-        try {
-          const formData = new FormData();
-          // 필요한 경우 여기에 데이터를 추가하세요
-          // formData.append('key', 'value');
-
-          const response = await fetch(
-            `https://2024-36-38-187-106.ngrok-free.app/api/audio/greet/`,
-            {
-              method: "POST",
-              body: formData,
-            }
-          );
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+      try {
+        const formData = new FormData();
+        const response = await fetch(
+          `https://2024-36-38-187-106.ngrok-free.app/api/audio/greet/`,
+          {
+            method: "POST",
+            body: formData,
           }
-          const responseData = await response.formData();
-          const textData = responseData.get("text");
-          const audioData = responseData.get("audio");
-
-          setGreetingMessage(textData);
-          console.log(textData);
-
-          // 오디오를 바로 재생합니다.
-          if (audioData) {
-            const audioBlob = new Blob([await audioData.arrayBuffer()], {
-              type: "audio/mpeg",
-            });
-            const audioUrl = URL.createObjectURL(audioBlob);
-            audioRef.current.src = audioUrl;
-            audioRef.current
-              .play()
-              .catch((e) => console.error("Error playing greeting audio:", e));
-          }
-
-          hasGreeted.current = true;
-        } catch (error) {
-          console.error("Error fetching greeting:", error);
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+        const responseData = await response.formData();
+        const textData = responseData.get("text");
+        const audioData = responseData.get("audio");
+
+        setGreetingMessage(textData);
+        console.log(textData);
+
+        if (audioData) {
+          const audioBlob = new Blob([await audioData.arrayBuffer()], {
+            type: "audio/mpeg",
+          });
+          const audioUrl = URL.createObjectURL(audioBlob);
+          audioRef.current.src = audioUrl;
+          setGreetingReady(true);
+        }
+      } catch (error) {
+        console.error("Error fetching greeting:", error);
       }
     };
 
     fetchGreeting();
   }, []);
+
+  const playGreeting = () => {
+    audioRef.current
+      .play()
+      .catch((e) => console.error("Error playing greeting audio:", e));
+    setGreetingReady(false);
+  };
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -115,7 +112,6 @@ const Speech = ({ onSpeechComplete }) => {
       startRecording();
     }
   };
-
   const handleSendAudio = async (audioBlob) => {
     setIsProcessing(true);
     try {
@@ -135,12 +131,33 @@ const Speech = ({ onSpeechComplete }) => {
       }
 
       const formDataResponse = await response.formData();
-      const textData = formDataResponse.get("category_text");
-      const audioData = formDataResponse.get("category_audio");
+      let textData, audioData;
+
+      // 첫 번째 경우: category_text와 category_audio
+      if (
+        formDataResponse.has("category_text") &&
+        formDataResponse.has("category_audio")
+      ) {
+        textData = formDataResponse.get("category_text");
+        audioData = formDataResponse.get("category_audio");
+      }
+      // 두 번째 경우: text1과 audio1
+      else if (
+        formDataResponse.has("text1") &&
+        formDataResponse.has("audio1")
+      ) {
+        textData = formDataResponse.get("text1");
+        audioData = formDataResponse.get("audio1");
+      }
+      // 예외 처리
+      else {
+        throw new Error("Expected response data not found");
+      }
+
       const apiData = formDataResponse.get("api_url");
       setTextData(textData);
       setApiData(apiData);
-      setHasInteracted(true); // 여기에 추가
+      setHasInteracted(true);
       console.log("Text response:", textData);
       console.log("Audio file name:", audioData.name);
       console.log("api response:", apiData);
@@ -170,6 +187,11 @@ const Speech = ({ onSpeechComplete }) => {
 
   return (
     <VoiceContainer>
+      {greetingReady && (
+        <PlayButton onClick={playGreeting}>
+          <FiPlay size={"2rem"} color="#fff" />
+        </PlayButton>
+      )}
       <VoiceBtn
         onClick={toggleRecording}
         disabled={isProcessing}
@@ -217,6 +239,13 @@ const Voice = styled.div`
   color: #fff;
   font-weight: 100;
   line-height: 1.3;
+`;
+
+const PlayButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 1rem;
 `;
 
 export default Speech;
