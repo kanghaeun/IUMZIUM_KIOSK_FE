@@ -187,11 +187,11 @@ const Speech = ({ onSpeechComplete }) => {
 
   return (
     <VoiceContainer>
-      {greetingReady && (
+      {/* {greetingReady && (
         <PlayButton onClick={playGreeting}>
           <FiPlay size={"2rem"} color="#fff" />
         </PlayButton>
-      )}
+      )} */}
       <VoiceBtn
         onClick={toggleRecording}
         disabled={isProcessing}
