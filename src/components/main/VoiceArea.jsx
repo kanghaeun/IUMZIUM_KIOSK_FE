@@ -1,10 +1,13 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { FiMic } from "react-icons/fi";
+import styled from "styled-components";
 
 const Speech = ({ onSpeechComplete }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const mediaRecorder = useRef(null);
+  const [isRed, setIsRed] = useState(false);
+
   const audioChunks = useRef([]);
   const audioRef = useRef(new Audio());
 
@@ -36,6 +39,7 @@ const Speech = ({ onSpeechComplete }) => {
 
       mediaRecorder.current.start();
       setIsRecording(true);
+      setIsRed(true); // 버튼 색상을 빨간색으로 설정
     } catch (error) {
       console.error("Error accessing microphone:", error);
     }
@@ -110,20 +114,54 @@ const Speech = ({ onSpeechComplete }) => {
   };
 
   return (
-    <div>
-      <button
+    <VoiceContainer>
+      <VoiceBtn
         onClick={toggleRecording}
         disabled={isProcessing}
+        isRed={isRed} // 녹음 상태에 따른 버튼 색상 변경
         className={`ml-2 p-2 rounded-md transition-colors ${
-          isRecording
-            ? "bg-red-500 text-white hover:bg-red-600"
-            : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-        } ${isProcessing ? "opacity-50 cursor-not-allowed" : ""}`}
+          isProcessing ? "opacity-50 cursor-not-allowed" : ""
+        }`}
       >
-        <FiMic size={20} />
-      </button>
-    </div>
+        <FiMic size={"3rem"} color="#fff" />
+      </VoiceBtn>
+      <Voice>원하시는 메뉴를 말씀해 주시면 주문 도와드리겠습니다</Voice>
+    </VoiceContainer>
   );
 };
 
 export default Speech;
+const VoiceContainer = styled.div`
+  text-align: center;
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  align-items: center;
+  padding-right: 60px;
+  padding-left: 60px;
+`;
+
+const VoiceBtn = styled.div`
+  margin-top: 2rem;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  background-color: ${({ isRed }) =>
+    isRed ? "red" : "none"}; /* 녹음 상태에 따라 배경색 변경 */
+`;
+
+const Voice = styled.div`
+  margin-top: 1.5rem;
+  font-size: 25px;
+  color: #fff;
+  font-weight: 100;
+  line-height: 1.3;
+`;
